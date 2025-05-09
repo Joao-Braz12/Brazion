@@ -13,8 +13,10 @@ import { toast } from "sonner";
 import { DocumentList } from "./document-list";
 import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
 import { TrashBox } from "./trash-box";
+import { useSearch } from "@/hooks/use-search";
 
 export const Navegation = () => {
+	const search = useSearch();
 	const pathname = usePathname();
 	const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -127,7 +129,7 @@ export const Navegation = () => {
 					label="Search"
 					icon={Search}
 					isSearch
-					onClick={()=>{}}
+					onClick={search.onOpen}
 					/>
 					<Item 
 					label="Settings"
