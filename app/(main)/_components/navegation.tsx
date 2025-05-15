@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings, SquareActivity, Trash2 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { UserItem } from "./user-item";
@@ -15,14 +15,14 @@ import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover
 import { TrashBox } from "./trash-box";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
-
+import { Navbar } from "./navbar";
 
 export const Navegation = () => {
 	const settings = useSettings();
 	const search = useSearch();
 	const pathname = usePathname();
 	const isMobile = useMediaQuery("(max-width: 768px)");
-
+	const params = useParams();
 	const create = useMutation(api.documents.create);
 
 	const isResizingRef = useRef(false);
@@ -172,10 +172,16 @@ export const Navegation = () => {
 					isMobile && "left-0 w-full"
 				)}
 			>
+				{!!params.documentId ? (
+					<Navbar 
+					isCollapsed={isCollapsed}
+					onResetWidth={resetWidth} />
+				) : (
 				<nav className="bg-transparent px-3 py-2 w-full">
 					{isCollapsed && <MenuIcon onClick={resetWidth}
 						className="h-6 w-6 text-muted-foreground" role="button" />}
 				</nav>
+			)}
 			</div>
 		</>
 	);
