@@ -9,7 +9,7 @@ import { useMutation } from "convex/react";
 import { useState, useRef } from "react";
 
 interface TitleProps {
-	initialData: Doc<"documents">;
+	initialData: Doc<"documents">
 }
 
 export const Title = ({
@@ -77,7 +77,7 @@ export const Title = ({
 	)
 }
 
-function userRef<T>(arg0: null) {
+function userRef<T>(args: null) {
 	throw new Error("Function not implemented.");
 }
 
