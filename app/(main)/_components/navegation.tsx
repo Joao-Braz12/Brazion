@@ -2,11 +2,11 @@
 
 import { cn } from "@/lib/utils";
 import { ChevronLeft, MenuIcon, PlusCircle, Search, Settings, SquareActivity, Trash2 } from "lucide-react";
-import { usePathname, useParams } from "next/navigation";
+import { usePathname, useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { UserItem } from "./user-item";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Item } from "./item";
 import { toast } from "sonner";
@@ -18,6 +18,7 @@ import { useSettings } from "@/hooks/use-settings";
 import { Navbar } from "./navbar";
 
 export const Navegation = () => {
+	const router = useRouter();
 	const settings = useSettings();
 	const search = useSearch();
 	const pathname = usePathname();
@@ -30,6 +31,7 @@ export const Navegation = () => {
 	const navBarRef = useRef<HTMLDivElement>(null);
 	const [isResetting, setIsResetting] = useState(false);
 	const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
 
 	const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.preventDefault();
@@ -46,10 +48,10 @@ export const Navegation = () => {
 		if (isMobile)
 			collapse();
 		resetWidth();
-	}, [isMobile, pathname]	);
+	}, [isMobile, pathname]);
 
 	useEffect(() => {
-		if(isMobile)
+		if (isMobile)
 			collapse();
 	}, [pathname, isMobile]);
 
@@ -103,14 +105,15 @@ export const Navegation = () => {
 		}
 	}
 
-	const handleCreate = () =>{
-		const promise = create({title: "Undefined"});
+	const handleCreate = () => {
+		const promise = create({ title: "Undefined" })
+			.then((documentId)  => router.push(`/documents/${documentId}`))
 
-		toast.promise(promise,{
+		toast.promise(promise, {
 			loading: "A new note is being create!..",
 			success: "A new note arrived!",
 			error: "Mission faild"
-		});
+		})
 	}
 
 	return (
@@ -128,25 +131,25 @@ export const Navegation = () => {
 				</div>
 				<div>
 					<UserItem />
-					<Item 
-					label="Search"
-					icon={Search}
-					isSearch
-					onClick={search.onOpen}
+					<Item
+						label="Search"
+						icon={Search}
+						isSearch
+						onClick={search.onOpen}
 					/>
-					<Item 
-					label="Settings"
-					icon={Settings}
-					onClick={settings.onOpen}
+					<Item
+						label="Settings"
+						icon={Settings}
+						onClick={settings.onOpen}
 					/>
-					<Item  
+					<Item
 						onClick={handleCreate}
 						label="New Page"
-						icon={PlusCircle}/>
+						icon={PlusCircle} />
 				</div>
 				<div className="mt-4">
 					<DocumentList />
-					<Item 
+					<Item
 						onClick={handleCreate}
 						label="New Page"
 						icon={PlusCircle} />
@@ -173,15 +176,15 @@ export const Navegation = () => {
 				)}
 			>
 				{!!params.documentId ? (
-					<Navbar 
-					isCollapsed={isCollapsed}
-					onResetWidth={resetWidth} />
+					<Navbar
+						isCollapsed={isCollapsed}
+						onResetWidth={resetWidth} />
 				) : (
-				<nav className="bg-transparent px-3 py-2 w-full">
-					{isCollapsed && <MenuIcon onClick={resetWidth}
-						className="h-6 w-6 text-muted-foreground" role="button" />}
-				</nav>
-			)}
+					<nav className="bg-transparent px-3 py-2 w-full">
+						{isCollapsed && <MenuIcon onClick={resetWidth}
+							className="h-6 w-6 text-muted-foreground" role="button" />}
+					</nav>
+				)}
 			</div>
 		</>
 	);
