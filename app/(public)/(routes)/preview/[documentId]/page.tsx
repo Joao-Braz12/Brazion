@@ -5,9 +5,7 @@ import { Toolbar } from "@/components/toolbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { update } from "@/convex/documents";
 import { useMutation, useQuery } from "convex/react";
-import { Cover } from "@/components/cover";
 
 interface DocumentIdPageProps {
 	params: {
@@ -55,11 +53,11 @@ const DocumentIdPage = ({
 
 	return (
 		<div className="pb-40">
-			<Cover url={document.coverImage}/>
+			<div className="h-35vh"/>
 			<div
 			className="md:max-w-3xl lg:max-4xl mx-auto">
-				<Toolbar initialData={document} />
-				<Editor
+				<Toolbar preview initialData={document} />
+				<Editor editable ={false}
 					onChange={onChange}
 					initialContent={document.content}
 				/>

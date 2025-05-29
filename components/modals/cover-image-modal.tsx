@@ -10,6 +10,8 @@ import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
 import { set } from "zod";
+import { UploaderProvider, UploadFn } from "../upload/uploader-provider";
+import React from "react";
 
 export const CoverImageModal = () => {
 	const params = useParams();
@@ -26,8 +28,14 @@ export const CoverImageModal = () => {
 		coverImage.onClose();
 	}
 
-	const onChange = async (file?: File) => {
-		if (file) {
+	const uploadFn: UploadFn = React.useCallback(
+		async ({ file, onProgressChange, signal }) => {
+			const res = await edgestore.publicFiles.upload({
+				file,
+				signal,
+				onProgressChange,
+			});
+			if (file) {
 			setIsUploading(true);
 			setFile(file);
 
@@ -39,7 +47,11 @@ export const CoverImageModal = () => {
 			});
 			onClose();
 		}
-	}
+			console.log(res);
+			return res;
+		},
+		[edgestore],
+	);
 
 	return (
 		<Dialog open={coverIMage.isOpen} onOpenChange={coverIMage.onClose}>
@@ -50,12 +62,19 @@ export const CoverImageModal = () => {
 					</h2>
 				</DialogHeader>
 				<div>
-					<SingleImageDropzone
-						className="w-full outline-none"
-						disabled={isUploading}
-						value={file}
-						onCHange={onChange}
-					/>
+					<UploaderProvider
+						uploadFn={uploadFn} autoUpload
+					>
+						<SingleImageDropzone
+							className="w-full outline-none"
+							height={200}
+							width={200}
+							dropzoneOptions={{
+								maxSize: 1024 * 1024 * 1, // 1 MB
+							}}
+							disabled={isUploading}
+						/>
+					</UploaderProvider>
 				</div>
 			</DialogContent>
 		</Dialog>

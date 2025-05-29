@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 
 import { mutation, query } from "./_generated/server";
-import { Doc, Id } from "./_generated/dataModel"
+import { Doc, Id } from "./_generated/dataModel";
 import { error } from "console";
 
 export const archive = mutation({
@@ -230,20 +230,20 @@ export const getSearch = query({
 });
 
 export const getById = query({
-	args: {documentId: v.id("documents")},
+	args: { documentId: v.id("documents") },
 	handler: async (ctx, args) => {
 		const identity = await ctx.auth.getUserIdentity();
 
 		const document = await ctx.db.get(args.documentId);
 		if (!document)
 			throw new Error("Document not found");
-		if(document.isPublished && !document.isArchived)
+		if (document.isPublished && !document.isArchived)
 			return document;
 
 		if (!identity)
 			throw new Error("Not authenticated");
 		const userId = identity.subject;
-		
+
 		if (document.userId !== userId)
 			throw new Error("Not authorized to view this document");
 		return document;
@@ -257,6 +257,7 @@ export const update = mutation({
 		content: v.optional(v.string()),
 		icon: v.optional(v.string()),
 		isPublished: v.optional(v.boolean()),
+		coverImage: v.optional(v.string())
 	},
 	handler: async (ctx, args) => {
 		const identity = await ctx.auth.getUserIdentity();
@@ -266,7 +267,7 @@ export const update = mutation({
 
 		const userId = identity.subject;
 
-		const {id, ...rest} = args;
+		const { id, ...rest } = args;
 
 		const existingdocument = await ctx.db.get(args.id);
 
@@ -276,7 +277,7 @@ export const update = mutation({
 		if (existingdocument.userId !== userId)
 			throw new Error("Not authorized to update this document");
 
-		const document = await ctx.db.patch(args.id, {...rest});
+		const document = await ctx.db.patch(args.id, { ...rest });
 
 		return document;
 	}
@@ -305,5 +306,30 @@ export const removeIcon = mutation({
 		});
 
 		return value;
+	}
+});
+
+export const removeCoverImage = mutation({
+	args: { id: v.id("documents") },
+	handler: async (ctx, args) => {
+		const identity = await ctx.auth.getUserIdentity();
+
+		if (!identity)
+			throw new Error("Not authenticated");
+
+		const userId = identity.subject;
+
+		const existingdocument = await ctx.db.get(args.id);
+
+		if(!existingdocument)
+			throw new Error("Not found");
+
+		if(existingdocument._id != userId)
+			throw new Error("Unauthorized")
+
+		const document = await ctx.db.patch(args.id,
+			{coverImage: undefined,});
+
+		return document;
 	}
 })
