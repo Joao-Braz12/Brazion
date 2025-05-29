@@ -5,7 +5,6 @@ import { Toolbar } from "@/components/toolbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { update } from "@/convex/documents";
 import { useMutation, useQuery } from "convex/react";
 import { Cover } from "@/components/cover";
 
@@ -20,7 +19,7 @@ const DocumentIdPage = ({
 }:DocumentIdPageProps) => {
 	const Editor = useMemo(() => dynamic(() => import("@/components/editor"), {ssr: false}), []);
 
-	const document = useQuery(api.documents.getById, {documentId  : params.documentId});
+	const existingdocument = useQuery(api.documents.getById, {documentId  : params.documentId});
 
 	const update = useMutation(api.documents.update);
 
@@ -31,7 +30,7 @@ const DocumentIdPage = ({
 		});
 	}
 
-	if (document === undefined)
+	if (existingdocument === undefined)
 		return (
 			<div>
 				<div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-10">
@@ -45,7 +44,7 @@ const DocumentIdPage = ({
 			</div>
 		);
 
-	if (document === null){
+	if (existingdocument === null){
 		return (
 			<div>
 				Document not found
@@ -55,13 +54,13 @@ const DocumentIdPage = ({
 
 	return (
 		<div className="pb-40">
-			<Cover url={document.coverImage}/>
+			<Cover url={existingdocument.coverImage}/>
 			<div
 			className="md:max-w-3xl lg:max-4xl mx-auto">
-				<Toolbar initialData={document} />
+				<Toolbar initialData={existingdocument} />
 				<Editor
 					onChange={onChange}
-					initialContent={document.content}
+					initialContent={existingdocument.content}
 				/>
 			</div>
 		</div>
