@@ -34,20 +34,20 @@ export const CoverImageModal = () => {
 				file,
 				signal,
 				onProgressChange,
+				options: {
+					replaceTargetUrl: coverImage.url
+				}
 			});
 			if (file) {
-			setIsUploading(true);
-			setFile(file);
+				setIsUploading(true);
+				setFile(file);
 
-			const res = await edgestore.publicFiles.upload({ file });
-
-			await update({
-				id: params.documentId as Id<"documents">,
-				coverImage: res.url
-			});
-			onClose();
-		}
-			console.log(res);
+				await update({
+					id: params.documentId as Id<"documents">,
+					coverImage: res.url
+				});
+				onClose();
+			}
 			return res;
 		},
 		[edgestore],
