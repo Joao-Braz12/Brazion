@@ -7,6 +7,8 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Cover } from "@/components/cover";
+import { usePathname } from "next/navigation";
+
 
 interface DocumentIdPageProps {
 	params: {
@@ -18,14 +20,16 @@ const DocumentIdPage = ({
 	params
 }:DocumentIdPageProps) => {
 	const Editor = useMemo(() => dynamic(() => import("@/components/editor"), {ssr: false}), []);
-
-	const existingdocument = useQuery(api.documents.getById, {documentId  : params.documentId});
+	const pathname = usePathname();
+	const parts = pathname.split("/");
+	const documentId = parts[parts.length - 1] as Id<"documents">; 
+	const existingdocument = useQuery(api.documents.getById, {documentId  : documentId});
 
 	const update = useMutation(api.documents.update);
 
 	const onChange = (content:string) => {
 		update({
-			id: params.documentId,
+			id: documentId,
 			content
 		});
 	}
