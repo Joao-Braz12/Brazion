@@ -2,9 +2,7 @@
 
 import { ChevronsLeft } from "lucide-react";
 import { SignOutButton, useUser } from "@clerk/clerk-react";
-
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export const UserItem = () => {
@@ -51,8 +49,11 @@ export const UserItem = () => {
 				</div>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>
-					<SignOutButton className="cursor-pointer w-full text-muted-foreground">
-						Sign Out
+					<SignOutButton>
+						<button
+							className="cursor-pointer w-full text-muted-foreground">
+							Sign Out
+						</button>
 					</SignOutButton>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
