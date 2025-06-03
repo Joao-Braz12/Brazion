@@ -9,7 +9,6 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useParams } from "next/navigation";
 import { Id } from "@/convex/_generated/dataModel";
-import { set } from "zod";
 import { UploaderProvider, UploadFn } from "../upload/uploader-provider";
 import React from "react";
 
@@ -23,7 +22,8 @@ export const CoverImageModal = () => {
 	const { edgestore } = useEdgeStore();
 
 	const onClose = () => {
-		setFile(undefined);
+		if(file)
+			setFile(undefined);
 		setIsUploading(false);
 		coverImage.onClose();
 	}
@@ -70,7 +70,7 @@ export const CoverImageModal = () => {
 							height={200}
 							width={200}
 							dropzoneOptions={{
-								maxSize: 1024 * 1024 * 1, // 1 MB
+								maxSize: 1024 * 1024 * 1,
 							}}
 							disabled={isUploading}
 						/>

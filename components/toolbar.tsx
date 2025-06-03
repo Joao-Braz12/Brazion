@@ -3,13 +3,12 @@
 import { IconPicker } from "@/app/(main)/_components/icon-picker";
 import { Doc } from "@/convex/_generated/dataModel";
 import { Button } from "./ui/button";
-import { Icon, ImageIcon, Smile, X } from "lucide-react";
+import { ImageIcon, Smile, X } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 
 import TextareaAutosize from "react-textarea-autosize";
-import { CoverImageModal } from "./modals/cover-image-modal";
 import { useCoverImage } from "@/hooks/use-cover-image";
 
 interface ToolbarProps {

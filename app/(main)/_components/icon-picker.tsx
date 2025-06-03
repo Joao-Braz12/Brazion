@@ -32,7 +32,7 @@ export const IconPicker = ({
 
 	return (
 		<Popover>
-			<PopoverTrigger asChild>
+			<PopoverTrigger>
 				{children}
 			</PopoverTrigger>
 			<PopoverContent className="w-full p-0 border-none shadow-none">

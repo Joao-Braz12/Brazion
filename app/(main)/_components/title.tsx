@@ -77,10 +77,6 @@ export const Title = ({
 	)
 }
 
-function userRef<T>(args: null) {
-	throw new Error("Function not implemented.");
-}
-
 Title.Skeleton = function TitleSkeleton() {
 	return(
 		<Skeleton 

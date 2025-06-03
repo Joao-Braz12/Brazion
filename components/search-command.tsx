@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { File } from "lucide-react";
 import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,6 @@ import{
 	CommandGroup,
 	CommandInput,
 	CommandItem,
-	CommandList
 } from "@/components/ui/command";
 import { api } from "@/convex/_generated/api";
 import { useSearch } from "@/hooks/use-search";

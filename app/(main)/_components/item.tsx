@@ -56,7 +56,7 @@ export const Item = ({
 		if (!id) return;
 
 		const promise = archive({ id })
-		.then((documentId)  => router.push(`/documents/`))
+		.then(()  => router.push(`/documents/`))
 
 		toast.promise(promise, {
 			loading: "Archiving the note...",

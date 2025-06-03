@@ -1,7 +1,5 @@
 import { Loader } from "lucide-react";
-
 import { cn } from "@/lib/utils";
-
 import { cva, type VariantProps } from "class-variance-authority";
 
 const spinnerVariants = cva(
@@ -22,6 +20,7 @@ const spinnerVariants = cva(
 );
 
 interface SpinnerProps extends VariantProps<typeof spinnerVariants> {
+	classname?: string;
 }
 
 export const Spinner = ({
