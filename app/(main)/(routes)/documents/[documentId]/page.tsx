@@ -10,15 +10,8 @@ import { Cover } from "@/components/cover";
 import { usePathname } from "next/navigation";
 
 
-interface DocumentIdPageProps {
-	params: {
-		documentId: Id<"documents">;
-	}
-}
 
-const DocumentIdPage = ({
-	params
-}:DocumentIdPageProps) => {
+const DocumentIdPage = () => {
 	const Editor = useMemo(() => dynamic(() => import("@/components/editor"), {ssr: false}), []);
 	const pathname = usePathname();
 	const parts = pathname.split("/");

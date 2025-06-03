@@ -17,8 +17,7 @@ interface IconPickerProps {
 
 export const IconPicker = ({
 	onChange,
-	children,
-	asChildren
+	children
 }: IconPickerProps) => {
 	const { resolvedTheme } = useTheme();
 	const currentTheme = (resolvedTheme || "light") as keyof typeof themeMap;
